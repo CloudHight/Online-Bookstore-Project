@@ -1,7 +1,6 @@
-FROM openjdk:8-jre-slim
-FROM ubuntu
 FROM tomcat
+FROM openjdk:8-jre-slim
 #copy war file on the container
-COPY **/*.war /usr/local/tomcat/webapps
-WORKDIR /usr/local/tomcat/webapps
+COPY onlinebookstore.war app/
+WORKDIR app/
 ENTRYPOINT [ "java", "-jar", "onlinebookstore.war", "--server.port=8085"]
