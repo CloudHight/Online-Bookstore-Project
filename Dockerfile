@@ -3,4 +3,4 @@ FROM openjdk:8-jre-slim
 #copy war file on the container
 COPY **/*.war app/
 WORKDIR app/
-ENTRYPOINT [ "java", "-jar", "onlinebookstore.war", "--server.port=8085"]
+ENTRYPOINT [ "java", "-jar", "onlinebookstore.war", "--server.port=8085" ]
