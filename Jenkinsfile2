@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    
+    stages{
+        stage('Build'){
+            steps {
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                    echo 'Archiving the artifacts'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
+            }
+        }
+        stage ("Deploy to Tomcat"){
+            steps {
+                sshagent(['jenkins-key']) {
+                    sh "scp -o StrictHostKeyChecking=no **/*.war ubuntu@52.47.133.22:/opt/tomcat/webapps"
+                    sh 'ssh -t -t ubuntu@52.47.133.22 -o strictHostKeyChecking=no "rm /opt/tomcat/webapps/ROOT.war && mv /opt/tomcat/webapps/*.war /opt/tomcat/webapps/ROOT.war"'
+                }
+            }
+        }
+    }
+}
